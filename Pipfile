@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.1"
+channels = "==4.0.0"
+djangorestframework = "==3.14.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
