@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from .models import Message
 
+
 class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('sender', 'recipient', 'content', 'is_read', 'timestamp')
+        fields = ('sender', 'receiver', 'content', 'is_read', 'timestamp')
