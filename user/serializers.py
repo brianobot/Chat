@@ -12,6 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = ['id', 'username', 'first_name', 'last_name']
 
 
+# TODO: Research More on TOkenObtainPairSerializer
 class LoginSerializer(TokenObtainPairSerializer):
 	@classmethod
 	def get_token(cls, user):
