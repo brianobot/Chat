@@ -5,21 +5,22 @@
 ## Features (Completed)
 - ✔ Real Time peer-to-peer messaging
 - ✔ Implemented over an api (and called using an api key/token)
-- Read Receipts should show in api response
-- Updating read status is done over another api. The frontend would make the api callonce the message is read
+- ✔ Read Receipts should show in api response
+- ✔ Updating read status is done over another api. The frontend would make the api call once the message is read
 
 ## Setup And Usage
-
 
  - ### API Endpoints:
    - /api/users/  : List all the user currently registered on the system
    - /api/signup/ : Endpoint for Creating a user instance in the system
-   - /api/login/  : Endpoint for Authenicating a user into the system, returns auth token
-   - /api/chats/  : Returns All Chatroom that involves the current auth user
+   - /api/login/  : Endpoint for Authenicating a user, returns auth token
+   - /api/chats/  : Lists All Chatroom that involves the current auth user
    - /api/chat/<str:room_id>/ : Returns a list of chats connected to the specified ChatRoom
-     - Websocket connection is expected from the frontend at this endpoint
+     - Websocket connection is expected from the frontend at this endpoint for real time peer to peer messaging
+   - /messages/<int:message_id>/update/ : EndPoint for updating the read receipt of a message (specified by the message_id)
 
-## Implementation:
+
+## Object Concepts:
 All chat-message instances are part of a chat-room instance which contains at least two users.
 
 A user can see all chat-room that he is involved in by going the chat endpoint (authorization)

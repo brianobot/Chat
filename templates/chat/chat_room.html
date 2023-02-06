@@ -67,12 +67,6 @@
     {{ room_id|json_script:"room-id" }}
     <script>
         const room_id = JSON.parse(document.getElementById('room-id').textContent);
-        let chat_room_data = {
-            'sender': '{{ request.user.pk }}',
-            'receiver': 1,
-        }
-
-        console.log("Data = ", chat_room_data);
 
         let url = `ws://${window.location.host}/ws/chat/${room_id}/`
 
@@ -85,8 +79,8 @@
 
         chat_websocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            console.log(data);
-            document.querySelector('#chat-log').value += (data.sender + ': ' + data.content + '\n');
+            console.log('data = ', data.message);
+            document.querySelector('#chat-log').value += (data.message.sender + ': ' + data.message.content + '\n');
         };
 
         chat_websocket.onclose = function(e) {
@@ -105,8 +99,7 @@
             chat_websocket.send(JSON.stringify({
                 'action': 'message',
                 'content': message,
-                'sender': '{{ request.user.pk }}',
-                'receiver': '{{ request.user.pk }}',
+                'sender_id': '{{ request.user.pk }}',
                 'room_id': room_id,
             }));
             messageInputDom.value = '';
