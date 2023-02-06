@@ -1,4 +1,7 @@
 django == 4.1
+daphne == 4.0.0
 channels == 4.0.0
 djangorestframework == 3.14.0
-django-cors-headers 
+djangorestframework-simplejwt
+django-cors-headers
+django-factory_boy
