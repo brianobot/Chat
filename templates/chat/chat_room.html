@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Chat</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        form {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            margin: 10px auto;
+        }
+
+        @media (max-width:700px){
+            form {
+                width: 100%;
+            }
+        }
+        textarea {
+            height: 60vh;
+            font-size: 15px;
+        }
+        textarea, 
+        input[type='text'] {
+            /* width: /%; */
+            margin: 10px 0;
+            padding: 15px 10px;
+            border-radius: 7px;
+            border: 1px solid black;
+        }
+
+        input[type='button'] {
+            width: 100px;
+            border-radius: 10px;
+            padding: 10px 10px;
+            border: none;
+            background-color: rgb(115, 115, 228);
+            margin-left: auto;
+            font-size: 20px;
+            color: white;
+        }
+
+        input[type='button']:hover {
+            background-color: rgb(10, 7, 102);
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <form action="">
+        <textarea name="" id="chat-log" cols="30" rows="10" placeholder="Loading Chat history..." disabled>{% if messages %}
+{% for message in messages %}
+{{message.sender}}: {{ message.content }}
+{% endfor %}
+{% else %} No Messages Yet
+{% endif %}
+        </textarea>
+        <input type="text" name="" id="chat-message-input" placeholder="Type Message here...">
+        <input type="button" id="chat-message-submit" value="send">
+    </form>
+
+    {{ room_id|json_script:"room-id" }}
+    <script>
+        const room_id = JSON.parse(document.getElementById('room-id').textContent);
+        let chat_room_data = {
+            'sender': '{{ request.user.pk }}',
+            'receiver': 1,
+        }
+
+        console.log("Data = ", chat_room_data);
+
+        let url = `ws://${window.location.host}/ws/chat/${room_id}/`
+
+        // Create WebSocket and Wait for Connection
+        const chat_websocket = new WebSocket(url);
+
+        chat_websocket.onopen = function(e){
+            console.log('Websocket Connected!');
+        }
+
+        chat_websocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+            document.querySelector('#chat-log').value += (data.sender + ': ' + data.content + '\n');
+        };
+
+        chat_websocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) { // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+        };
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chat_websocket.send(JSON.stringify({
+                'action': 'message',
+                'content': message,
+                'sender': '{{ request.user.pk }}',
+                'receiver': '{{ request.user.pk }}',
+                'room_id': room_id,
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+</html>
