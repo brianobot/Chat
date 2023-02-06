@@ -56,7 +56,7 @@ A user can see all chat-room that he is involved in by going the chat endpoint.
 A user can go into and interact with a chat-room by going to the chat-room endpoint
     View URL - `api/v1/chat/<chat-room-id>/`
 
-Once in the chat-room view, a websocket is created for real-time connection with the server and hence the other connected user>  
+Once in the chat-room view, a websocket is created for real-time connection with the server and hence the other connected user.    
   Websocket url - `ws/chat/<chat-room-id>/`
 
 
