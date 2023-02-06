@@ -2,9 +2,9 @@
 
 ## Description
 
-## Features
-- Real Time peer-to-peer messaging
-- Implemented over an api (and called using an api key/token)
+## Features (Completed)
+- ✔ Real Time peer-to-peer messaging
+- ✔ Implemented over an api (and called using an api key/token)
 - Read Receipts should show in api response
 - Updating read status is done over another api. The frontend would make the api callonce the message is read
 
