@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,12 +14,12 @@ SECRET_KEY = "django-insecure-ln*$43t4!=xzk-612c1+7gmrq1n^@1fup44u--z0j7s3qyl#&$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -31,6 +32,8 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     # 3rd party
     'rest_framework',
+    'rest_framework.authtoken',
+    # 'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ]
 
@@ -51,7 +54,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -65,7 +68,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.routing.application"
+ASGI_APPLICATION = "config.asgi.application"
+
 
 CHANNEL_LAYERS = {
     "default": {
@@ -109,7 +113,9 @@ AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
