@@ -3,15 +3,26 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+from rest_framework.authentication import TokenAuthentication
+
 from .models import ChatRoom, Message 
 from .serializers import ChatRoomSerializer, MessageSerializer
 
+
 # Added Support for Normal Function Views for each API view
+@permission_classes(IsAuthenticated)
 def chat_list(request):
     return render(request, 'chat/chat_list.html')
 
 
 class ChatRoomListAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
     def get(self, request):
         # Only get chatrooms where the current login user is part of
         chat_rooms = ChatRoom.objects.filter(member=request.user)
@@ -29,6 +40,7 @@ class ChatRoomListAPI(APIView):
         return Response(serializer.errors)
 
 
+@permission_classes(IsAuthenticated)
 def chat_room(request, chat_room_id):
     chat_room = get_object_or_404(ChatRoom, room_id=chat_room_id)
     messages = chat_room.messages.all()
@@ -36,6 +48,9 @@ def chat_room(request, chat_room_id):
 
 
 class ChatRoomAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
     # TODO: Introduce Pagination to limit the number of messages returned
     def get(self, request, chat_room_id):
         chat_room = get_object_or_404(ChatRoom, room_id=chat_room_id)
@@ -43,6 +58,13 @@ class ChatRoomAPI(APIView):
         data = MessageSerializer(messages, many=True, context={'request':request}).data
         return Response(data)
 
+
+@api_view(['PATCH'])
+def update_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    message.is_read = True
+    message.save()
+    return Response({'message': 'Message updated successfully.'}, status=status.HTTP_200_OK)
 
 # Version 2
 # class MessagesView(ListAPIView):

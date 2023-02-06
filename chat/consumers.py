@@ -9,72 +9,78 @@ from .models import ChatRoom, Message
 class MessageConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Accept the websocket connection
-        print("Acceptin Connection....")
+        print("Accepting Connection....")
         self.room_id = self.scope['url_route']['kwargs']['room_id']
+        self.room_group_name = f"chat_{self.room_id}"
+
+        # Join room group
+        await self.channel_layer.group_add(
+            self.room_group_name, 
+            self.channel_name
+        )
 
         await self.accept()
 
     async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
+			self.room_id,
+			self.channel_name
+		)
         # Close the websocket connection
-        print("Closing Connection...")
         await self.close()
 
+    # Receive message from WebSocket
     async def receive(self, text_data):
         # Deserialize the JSON data
         text_data_json = json.loads(text_data)
         action = text_data_json['action']
-        room_id = text_data_json['room_id']
-        
+        content = text_data_json['content']
+        sender_id = text_data_json['sender_id']
 
-        if action == 'message':
-            content = text_data_json['content']
-            sender_id = text_data_json['sender']
-            receiver_id = text_data_json['receiver']
-            chatMessage = await database_sync_to_async(
-                self.saveMessage
-            )(content, sender_id, receiver_id, room_id)
-        elif action == 'typing':
-            chatMessage = text_data_json
+        # Save Chat to the Database
+        chat_message = await database_sync_to_async(
+            self.saveMessage)(content, sender_id, self.room_id)
 
+        # Send message to room group
         await self.channel_layer.group_send(
-            room_id,
+            self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': chatMessage,
+                'message': chat_message,
             }
         )
 
-        # Store the message in the database
         # Add a field for the read status and update it based on the received message
         # You can use Django models to interact with the database
 
-        # Send the message to the receiver
-        await self.send(text_data=json.dumps({
-            'sender': sender_id,
-            'content': content,
-        }))
-
-        # send a read receipt to the sender
-        await self.send(text_data=json.dumps({
-            'receiver': receiver_id,
-            'is_read': True,
-        }))
-
-    def saveMessage(self, content, sender_id, receiver_id, room_id):
+    def saveMessage(self, content, sender_id, room_id):
         sender = User.objects.get(id=sender_id)
-        receiver = User.objects.get(id=receiver_id)
         chat_room = ChatRoom.objects.get(room_id=room_id)
         message_obj = Message.objects.create(
             chatroom=chat_room, 
             sender=sender,
-            receiver=receiver, 
             content=content,
         )
         return {
             'action': 'message',
-            'room_id': room_id,
+            'sender': str(sender),
             'content': content,
-            'sender': sender_id,
-            'receiver': receiver_id,
+            'room_id': room_id,
+            'is_read': str(message_obj.is_read),
             'created': str(message_obj.created)
         }
+
+
+    # Receive message from room group
+    async def chat_message(self, event):
+        message = event['message']
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message
+        }))
+
+
+
+

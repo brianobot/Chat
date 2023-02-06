@@ -8,7 +8,7 @@ class ChatRoomFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ChatRoom
 
-    # member = 
+    room_id = factory.Sequence(lambda n: f'room_{n}')
 
 
 class MessageFactory(factory.django.DjangoModelFactory):
@@ -17,5 +17,5 @@ class MessageFactory(factory.django.DjangoModelFactory):
 
     sender = factory.SubFactory(UserFactory)
     receiver = factory.SubFactory(UserFactory)
-    content = "test content"
+    content = "test message content"
     chatroom = factory.SubFactory(ChatRoomFactory)

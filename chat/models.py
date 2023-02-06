@@ -20,7 +20,7 @@ class ChatRoom(models.Model):
 class Message(models.Model):
     # TODO: refactor the user duplication in the message model since there are already present in the chat room model
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='recipient', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='recipient', on_delete=models.CASCADE, blank=True, null=True)
     is_read = models.BooleanField(default=False)
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -29,6 +29,14 @@ class Message(models.Model):
 
     def __str__(self):
         return f"TO: {self.receiver} FROM: {self.sender}"
+
+    def save(self, *args, **kwargs):
+        # This hack here is to allow a message instance to be created 
+        # without providing a receiver attribute directly
+        if not self.receiver:
+            member_a, member_b, *rem_members = self.chatroom.member.all()
+            self.receiver = member_a if self.sender == member_b else member_b
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ('created' ,)
