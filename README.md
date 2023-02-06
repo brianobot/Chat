@@ -51,13 +51,14 @@ The API has the following endpoints for authentication, messages, and chat rooms
 ## Object Concepts:
 All chat-message instances are part of a chat-room instance which contains at least two users.
 
-A user can see all chat-room that he is involved in by going the chat endpoint (authorization)
-    View URL - `/chat/`
-A user can go into and interact with a chat-room by going to the chat-room endpoint (identification and authorization)
-    View URL - `/chat/<chat-room-id>/`
-    Once in the chat-room view, a websocket is created for real-time connection with the server and hence the other connected user
-    Websocket url - `/chat/<chat-room-id>/`
+A user can see all chat-room that he is involved in by going the chat endpoint.   
+    View URL - `api/v1/chat/`
+A user can go into and interact with a chat-room by going to the chat-room endpoint
+    View URL - `api/v1/chat/<chat-room-id>/`
+
+Once in the chat-room view, a websocket is created for real-time connection with the server and hence the other connected user>  
+  Websocket url - `ws/chat/<chat-room-id>/`
 
 
 ## Maintainer:
-Brian Obot <brianobot9@gmail.com>
+- Brian Obot <brianobot9@gmail.com>
