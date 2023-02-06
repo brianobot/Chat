@@ -26,7 +26,7 @@ These instructions will get you a copy of the project up and running on your loc
     `https://github.com/brianobot/Chat.git`
   
 2. Setup Virtual Environment:  
-    `pip install pipenv`
+    `pip install pipenv`  
     `pipenv shell`
 
 3. Install the required packages:  
