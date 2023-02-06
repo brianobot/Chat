@@ -22,17 +22,17 @@ These instructions will get you a copy of the project up and running on your loc
 - Django Channels
 
 ### Installing
-1. Clone the repository:
+1. Clone the repository:  
     `https://github.com/brianobot/Chat.git`
   
-2. Setup Virtual Environment
+2. Setup Virtual Environment:  
     `pip install pipenv`
     `pipenv shell`
 
-3. Install the required packages:
+3. Install the required packages:  
     `pipenv install -r requirements.txt`
 
-4. Run the development server:
+4. Run the development server:  
     `python manage.py runserver`
 
 
