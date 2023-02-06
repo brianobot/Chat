@@ -1,4 +1,4 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
@@ -25,14 +25,6 @@ class UserSerializer(serializers.ModelSerializer):
         Token.objects.create(user=user)
         return user
 
-
-# TODO: Research More on TOkenObtainPairSerializer
-class LoginSerializer(TokenObtainPairSerializer):
-	@classmethod
-	def get_token(cls, user):
-		token = super().get_token(user)
-		token['userId'] = user.id
-		return token
 
 
 class SignupSerializer(serializers.ModelSerializer):

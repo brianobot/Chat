@@ -4,12 +4,13 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.contrib.auth import authenticate, logout
 
 from .models import User
-from .serializers import UserSerializer, LoginSerializer, SignupSerializer
+from .serializers import UserSerializer, SignupSerializer
 
 
 # Create your views here.
@@ -33,7 +34,7 @@ class UserView(generics.ListAPIView):
 
 class LoginApiView(TokenObtainPairView):
 	permission_classes = [AllowAny]
-	serializer_class = LoginSerializer
+	serializer_class = TokenObtainPairSerializer
 
 
 class SignupApiView(generics.CreateAPIView):
