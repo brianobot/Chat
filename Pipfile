@@ -10,6 +10,7 @@ django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 django-factory-boy = "*"
 channels = {extras = ["daphne"], version = "*"}
+daphne = "*"
 
 [dev-packages]
 

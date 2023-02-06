@@ -1,23 +1,51 @@
-# Real-Time Peer-To-Peer Messaging API
+# Django Real-Time Chat API
 
 ## Description
+A high-performance, secure, and scalable real-time chat API built with Django. This API allows developers to easily build chat applications that can handle large amounts of messages and users.
 
-## Features (Completed)
-- ✔ Real Time peer-to-peer messaging
-- ✔ Implemented over an api (and called using an api key/token)
-- ✔ Read Receipts should show in api response
-- ✔ Updating read status is done over another api. The frontend would make the api call once the message is read
+## Key Features (Completed)
+- ✔ Real-time chat communication using WebSockets
+- ✔ User authentication and authorization using token-based authentication
+- ✔ Scalable architecture to handle large numbers of users and messages
+- ✔ Efficient database design to store and retrieve messages in real-time
+- ✔ Efficient database design to store and retrieve messages in real-time
+- ✔ Robust security features to protect against malicious attacks
 
-## Setup And Usage
 
- - ### API Endpoints:
-   - /api/users/  : List all the user currently registered on the system
-   - /api/signup/ : Endpoint for Creating a user instance in the system
-   - /api/login/  : Endpoint for Authenicating a user, returns auth token
-   - /api/chats/  : Lists All Chatroom that involves the current auth user
-   - /api/chat/<str:room_id>/ : Returns a list of chats connected to the specified ChatRoom
+## Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+- Python 3.x
+- Django 2.x
+- Django Rest Framework
+- Django Channels
+
+### Installing
+1. Clone the repository:
+    `https://github.com/brianobot/Chat.git`
+  
+2. Setup Virtual Environment
+    `pip install pipenv`
+    `pipenv shell`
+
+3. Install the required packages:
+    `pipenv install -r requirements.txt`
+
+4. Run the development server:
+    `python manage.py runserver`
+
+
+## API Endpoints:
+The API has the following endpoints for authentication, messages, and chat rooms:
+   - `/api/v1/api-token-auth/`:  Endpoint for obtaining tokens
+   - `/api/v1/signup/` : Endpoint for Creating a user instance in the system
+   - `/api/v1/login/`  : Endpoint for Authenicating a user, returns auth token
+   - `/api/v1/users/`  : List all the user currently registered on the system
+   - `/api/v1/chats/`  : Lists All Chatroom that involves the current auth user
+   - `/api/v1/chat/<str:room_id>/` : Returns a list of chats connected to the specified ChatRoom
      - Websocket connection is expected from the frontend at this endpoint for real time peer to peer messaging
-   - /messages/<int:message_id>/update/ : EndPoint for updating the read receipt of a message (specified by the message_id)
+   - `api/v1/messages/<int:message_id>/update/` : EndPoint for updating the read receipt of a message (specified by the message_id)
 
 
 ## Object Concepts:
@@ -30,3 +58,6 @@ A user can go into and interact with a chat-room by going to the chat-room endpo
     Once in the chat-room view, a websocket is created for real-time connection with the server and hence the other connected user
     Websocket url - `/chat/<chat-room-id>/`
 
+
+## Maintainer:
+Brian Obot <brianobot9@gmail.com>
