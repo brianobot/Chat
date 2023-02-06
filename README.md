@@ -52,7 +52,7 @@ The API has the following endpoints for authentication, messages, and chat rooms
 All chat-message instances are part of a chat-room instance which contains at least two users.
 
 A user can see all chat-room that he is involved in by going the chat endpoint.   
-    View URL - `api/v1/chat/`
+    View URL - `api/v1/chat/`  
 A user can go into and interact with a chat-room by going to the chat-room endpoint
     View URL - `api/v1/chat/<chat-room-id>/`
 
