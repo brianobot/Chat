@@ -1,4 +1,5 @@
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -8,6 +9,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.contrib.auth import authenticate, logout
+from rest_framework.authtoken.models import Token
 
 from .models import User
 from .serializers import UserSerializer, SignupSerializer
@@ -33,8 +35,23 @@ class UserView(generics.ListAPIView):
 
 
 class LoginApiView(TokenObtainPairView):
+	authentication_classes = (authentication.BasicAuthentication, authentication.SessionAuthentication)
 	permission_classes = [AllowAny]
 	serializer_class = TokenObtainPairSerializer
+
+	def post(self, request, *args, **kwargs):
+		print("Requesrt = ", request)
+		response = super().post(request, *args, **kwargs)
+
+		if response.status_code == status.HTTP_200_OK:
+			# Save the token to the database
+			user = request.user
+			# Retrieve existing token for the user
+			token, created = Token.objects.get_or_create(user=user)
+			# Use the existing token if it exists, otherwise create a new one
+			response.data["token"] = token.key
+
+		return response
 
 
 class SignupApiView(generics.CreateAPIView):

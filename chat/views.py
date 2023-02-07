@@ -1,4 +1,5 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
+from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
@@ -8,6 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import ChatRoom, Message 
 from .serializers import ChatRoomSerializer, MessageSerializer
@@ -21,7 +23,8 @@ def chat_list(request):
 
 class ChatRoomListAPI(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
+    authentication_classes = (authentication.BasicAuthentication, authentication.SessionAuthentication, authentication.TokenAuthentication)
 
     def get(self, request):
         # Only get chatrooms where the current login user is part of
@@ -65,6 +68,12 @@ def update_message(request, message_id):
     message.is_read = True
     message.save()
     return Response({'message': 'Message updated successfully.'}, status=status.HTTP_200_OK)
+
+
+class ObtainTokenPairView(TokenObtainPairView):
+    permission_classes = [permissions.AllowAny]
+
+
 
 # Version 2
 # class MessagesView(ListAPIView):
