@@ -22,9 +22,7 @@ def chat_list(request):
 
 
 class ChatRoomListAPI(APIView):
-    permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
-    authentication_classes = (authentication.BasicAuthentication, authentication.SessionAuthentication, authentication.TokenAuthentication)
+    permission_classes = (IsAuthenticated, )
 
     def get(self, request):
         # Only get chatrooms where the current login user is part of
@@ -51,8 +49,7 @@ def chat_room(request, chat_room_id):
 
 
 class ChatRoomAPI(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    permission_classes = (IsAuthenticated, )
 
     # TODO: Introduce Pagination to limit the number of messages returned
     def get(self, request, chat_room_id):

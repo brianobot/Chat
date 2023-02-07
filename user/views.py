@@ -35,12 +35,10 @@ class UserView(generics.ListAPIView):
 
 
 class LoginApiView(TokenObtainPairView):
-	authentication_classes = (authentication.BasicAuthentication, authentication.SessionAuthentication)
 	permission_classes = [AllowAny]
-	serializer_class = TokenObtainPairSerializer
+	authentication_classes = (authentication.BasicAuthentication, authentication.SessionAuthentication)
 
 	def post(self, request, *args, **kwargs):
-		print("Requesrt = ", request)
 		response = super().post(request, *args, **kwargs)
 
 		if response.status_code == status.HTTP_200_OK:
