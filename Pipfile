@@ -5,12 +5,12 @@ name = "pypi"
 
 [packages]
 django = "==4.1"
-djangorestframework = "==3.14.0"
-django-cors-headers = "*"
-djangorestframework-simplejwt = "*"
-django-factory-boy = "*"
-channels = {extras = ["daphne"], version = "*"}
 daphne = "*"
+channels = "*"
+djangorestframework = "==3.14.0"
+djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
+django-factory-boy = "*"
 
 [dev-packages]
 
