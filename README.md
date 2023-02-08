@@ -17,9 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 - Python 3.x
-- Django 2.x
-- Django Rest Framework
-- Django Channels
+- Pip 
 
 ### Installing
 1. Clone the repository:  
