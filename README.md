@@ -21,17 +21,25 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 1. Clone the repository:  
-    `https://github.com/brianobot/Chat.git`
+```python
+https://github.com/brianobot/Chat.git
+```
   
 2. Setup Virtual Environment:  
-    `pip install pipenv`  
-    `pipenv shell`
+```python
+pip install pipenv
+pipenv shell
+```
 
 3. Install the required packages:  
-    `pipenv install -r requirements.txt`
+```python
+pipenv install -r requirements.txt
+```
 
 4. Run the development server:  
-    `python manage.py runserver`
+```python
+python manage.py runserver
+```
 
 
 ## API Endpoints:
