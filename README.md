@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 - Python 3.x
-- Pip 
+- Pip (Usually comes with official python installation)
 
 ### Installing
 1. Clone the repository:  
