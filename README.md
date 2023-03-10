@@ -8,7 +8,6 @@ A high-performance, secure, and scalable real-time chat API built with Django. T
 - ✔ User authentication and authorization using token-based authentication
 - ✔ Scalable architecture to handle large numbers of users and messages
 - ✔ Efficient database design to store and retrieve messages in real-time
-- ✔ Efficient database design to store and retrieve messages in real-time
 - ✔ Robust security features to protect against malicious attacks
 
 
