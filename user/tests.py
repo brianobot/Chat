@@ -1,9 +1,8 @@
 from django.test import TestCase
 
-from .factories import UserFactory
+from user.factories import UserFactory
 
 
-# Create your tests here.
 class UserTestCase(TestCase):
     def setUp(self) -> None:
         self.user = UserFactory.create()
@@ -13,5 +12,3 @@ class UserTestCase(TestCase):
 
     def test_user_is_active(self):
         self.assertTrue(self.user.is_active)
-
-    

@@ -1,4 +1,4 @@
-django == 4.1
+django == 5.0
 daphne
 channels
 djangorestframework == 3.14.0

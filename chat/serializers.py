@@ -9,18 +9,17 @@ class ChatRoomSerializer(serializers.ModelSerializer):
     members = serializers.ListField(write_only=True)
 
     def create(self, validatedData):
-        memberObject = validatedData.pop('members')
+        memberObject = validatedData.pop("members")
         chatRoom = ChatRoom.objects.create(*validatedData)
         chatRoom.memeber.set(memberObject)
         return chatRoom
 
     class Meta:
         model = ChatRoom
-        exclude = ('id', )
+        exclude = ("id",)
 
 
 class MessageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Message
-        exclude = ('id', 'chatroom')
+        exclude = ("id", "chatroom")

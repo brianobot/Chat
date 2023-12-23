@@ -8,7 +8,7 @@ class ChatRoomFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ChatRoom
 
-    room_id = factory.Sequence(lambda n: f'room_{n}')
+    room_id = factory.Sequence(lambda n: f"room_{n}")
 
 
 class MessageFactory(factory.django.DjangoModelFactory):
