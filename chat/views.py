@@ -1,18 +1,13 @@
-from rest_framework import generics, permissions
-from rest_framework import authentication
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.shortcuts import render, get_object_or_404
-
-from rest_framework import status
-from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404, render
+from rest_framework import permissions, status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import ChatRoom, Message
-from .serializers import ChatRoomSerializer, MessageSerializer
+from chat.models import ChatRoom, Message
+from chat.serializers import ChatRoomSerializer, MessageSerializer
 
 
 # Added Support for Normal Function Views for each API view
@@ -34,7 +29,10 @@ class ChatRoomListAPI(APIView):
 
     # For creating new chatroom
     def post(self, request):
-        serializer = ChatRoomSerializer(data=request.data, context={"request": request})
+        serializer = ChatRoomSerializer(
+            data=request.data,
+            context={"request": request},
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -46,7 +44,9 @@ def chat_room(request, chat_room_id):
     chat_room = get_object_or_404(ChatRoom, room_id=chat_room_id)
     messages = chat_room.messages.all()
     return render(
-        request, "chat/chat_room.html", {"room_id": chat_room_id, "messages": messages}
+        request,
+        "chat/chat_room.html",
+        {"room_id": chat_room_id, "messages": messages},
     )
 
 
@@ -57,7 +57,9 @@ class ChatRoomAPI(APIView):
     def get(self, request, chat_room_id):
         chat_room = get_object_or_404(ChatRoom, room_id=chat_room_id)
         messages = chat_room.messages.all().order_by("-created")
-        data = MessageSerializer(messages, many=True, context={"request": request}).data
+        data = (
+            MessageSerializer(messages, many=True, context={"request": request}).data,
+        )
         return Response(data)
 
 
@@ -67,7 +69,8 @@ def update_message(request, message_id):
     message.is_read = True
     message.save()
     return Response(
-        {"message": "Message updated successfully."}, status=status.HTTP_200_OK
+        {"message": "Message updated successfully."},
+        status=status.HTTP_200_OK,
     )
 
 
@@ -82,4 +85,6 @@ class ObtainTokenPairView(TokenObtainPairView):
 
 # 	def get_queryset(self):
 # 		room_id = self.kwargs['room_id']
-# 		return ChatMessage.objects.filter(messages__room_id=room_id).order_by('-created')
+# return ChatMessage.objects.filter(
+#        messages__room_id=room_id
+#     ).order_by('-created')
